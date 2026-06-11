@@ -1,48 +1,84 @@
 # GenLayer Codegen
 
-GenLayer Codegen is a static web app that generates GenLayer-ready contract templates from plain-English prompts.
+GenLayer Codegen is a static, single-page contract generator for the GenLayer ecosystem. It turns plain-English ideas into Studio-ready contract templates and keeps the whole experience framework-free.
 
-## What is in this repo
+## What this repository contains
 
-- `index.html` - the full client app UI and generation workflow
-- `favicon.png` - app icon
-- `netlify/functions/oracle.js` - serverless function used for live oracle checks and condition handling
-- `netlify.toml` - Netlify deployment config
+- [`index.html`](./index.html) - the full UI, template selector, contract builders, and download/copy logic
+- [`favicon.png`](./favicon.png) - the site icon
+- [`netlify/functions/oracle.js`](./netlify/functions/oracle.js) - the serverless oracle used for live condition checks
+- [`netlify.toml`](./netlify.toml) - the Netlify deployment config
+- [`README.md`](./README.md) - this build and repo guide
 
-## How it works
+## What the app does
 
-1. The user opens `index.html`.
-2. The UI lets them choose a template or write a custom contract request.
-3. The page builds a GenLayer contract draft in the browser.
-4. The Netlify function at `netlify/functions/oracle.js` is available for public-data checks such as:
-   - crypto price conditions
-   - sports results
-   - news or web checks
-5. The generated output is designed to be copied into GenLayer Studio or adapted into a deployable contract file.
+1. A user opens the HTML page in a browser.
+2. The page presents GenLayer contract types and a custom contract flow.
+3. The user picks a preset or writes a plain-English idea.
+4. The client-side generators in `index.html` build the contract text directly in the browser.
+5. The app can generate schema-safe contract drafts for patterns like:
+   - prediction/oracle contracts
+   - bounty and task contracts
+   - escrow and split payments
+   - multisig treasury logic
+   - subscriptions, crowdfunds, timelocks, and other custom templates
+6. The output can be copied or downloaded for use in GenLayer Studio.
+
+## How it was built
+
+This project was built as a lightweight static app instead of a framework-based application.
+
+- The UI and all template generation live in one HTML file.
+- Contract templates are assembled by plain JavaScript functions inside `index.html`.
+- The app includes custom validation so the generated output stays usable for Studio.
+- The `oracle.js` Netlify function handles public-data checks that some contract templates rely on.
+- There is no bundler, transpiler, or frontend build pipeline.
+
+## Oracle function
+
+The serverless function at `netlify/functions/oracle.js` supports condition checks for:
+
+- crypto price conditions using CoinGecko
+- sports result lookups
+- news/event style checks
+- generic web/source checks
+
+It returns structured JSON responses that the app can use when a template needs an external condition or fallback summary.
+
+## File-by-file summary
+
+- `index.html` handles the entire browser app, including:
+  - template selection
+  - custom idea entry
+  - contract assembly
+  - copy/download actions
+  - theme switching
+  - oracle URL construction
+- `netlify/functions/oracle.js` implements the public-data oracle endpoint.
+- `netlify.toml` tells Netlify to serve the root folder and the `netlify/functions` directory.
+- `favicon.png` is the app branding asset.
 
 ## Local development
 
-This project is intentionally lightweight and does not require a framework build step.
+Because this is a static site, you can run it with any simple file server.
 
-### 1. Open the app locally
-
-You can serve the folder with any static file server, for example:
-
-```bash
-npx serve .
-```
-
-or with Python:
+### Option 1: Python
 
 ```bash
 python -m http.server 8000
 ```
 
-Then open the local URL in a browser.
+### Option 2: Node-based static server
 
-### 2. Run Netlify functions locally
+```bash
+npx serve .
+```
 
-If you want to test the oracle function, use the Netlify CLI:
+Open the local URL in a browser after starting the server.
+
+## Oracle testing locally
+
+If you want to run the Netlify function locally, use Netlify CLI:
 
 ```bash
 npm install -g netlify-cli
@@ -53,15 +89,13 @@ That serves the static app and the `netlify/functions/oracle.js` endpoint togeth
 
 ## Deployment
 
-Deploy the repo to Netlify with:
+Deploy this repository to Netlify with:
 
 - publish directory: repository root
 - functions directory: `netlify/functions`
 
-The app does not need a compile step. The build is just the checked-in HTML, assets, and serverless function.
+No build step is required. The deployable app is the checked-in HTML, the favicon, the Netlify function, and the config file.
 
-## Notes
+## Review note
 
-- The project is a single-page static generator.
-- There is no frontend framework or bundler.
-- The behavior lives mostly in `index.html` and `netlify/functions/oracle.js`.
+This repository is the GenLayer codegen project itself. It is intentionally separate from the LYRA project and should be reviewed on its own GitHub URL.
