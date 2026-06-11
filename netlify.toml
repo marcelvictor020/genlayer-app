@@ -1,0 +1,12 @@
+functionsDirectory = "netlify/functions"
+plugins = []
+headers = []
+redirects = []
+
+[build]
+publish = "."
+functions = "netlify/functions"
+
+[functions]
+
+[functions."*"]
