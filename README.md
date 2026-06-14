@@ -95,7 +95,3 @@ Deploy this repository to Netlify with:
 - functions directory: `netlify/functions`
 
 No build step is required. The deployable app is the checked-in HTML, the favicon, the Netlify function, and the config file.
-
-## Review note
-
-This repository is the GenLayer codegen project itself. It is intentionally separate from the LYRA project and should be reviewed on its own GitHub URL.
